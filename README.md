@@ -1,98 +1,163 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🛠 Full-Stack Authentication API (NestJS)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Welcome to the backend of a full-stack authentication and user management system built using **NestJS**. This app handles user registration, login, email verification, and more.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 📦 Tech Stack
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+* **Backend Framework**: NestJS
+* **Database**: PostgreSQL
+* **ORM**: TypeORM
+* **Email Service**: Mailtrap (for development)
+* **Authentication**: JWT (JSON Web Tokens)
+* **Password Security**: Bcrypt
 
-## Project setup
+---
 
-```bash
-$ npm install
-```
+## 🚀 Features
 
-## Compile and run the project
+* User **Registration** with password hashing
+* **Login** with JWT token generation
+* **Email Verification** using a unique token sent via email
+* Login **notification emails** sent on each login
+* Protection for routes requiring verified accounts
+
+---
+
+## 📁 Project Setup
+
+### 🧰 Install Dependencies
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
+### ▶️ Run Locally
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# Start in development mode
+npm run start:dev
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## ✉️ Email Configuration (Development)
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+This app uses [Mailtrap](https://mailtrap.io/) to simulate sending emails (e.g., verification, login notifications).
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+### 🔐 Set up Mailtrap:
+
+1. Sign up on [Mailtrap.io](https://mailtrap.io)
+2. Create a new inbox
+3. Copy SMTP credentials
+4. Create a `.env` file in your root directory and add the following:
+
+```env
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USER=your_mailtrap_username_here
+MAIL_PASS=your_mailtrap_password_here
+MAIL_FROM="Your App <noreply@yourapp.com>"
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+> ⚠️ Do **NOT** commit your real `.env` or credentials to version control.
 
-## Resources
+For collaboration, create a `.env.example` file:
 
-Check out a few resources that may come in handy when working with NestJS:
+```env
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USER=your_username_here
+MAIL_PASS=your_password_here
+MAIL_FROM="App Name <noreply@app.com>"
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+---
 
-## Support
+## 📝 API Logic Summary
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 🔐 Register
 
-## Stay in touch
+* Route: `POST /auth/register`
+* On successful registration:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+  * User is stored with a hashed password
+  * A verification token is generated
+  * A verification email is sent via Mailtrap
 
-## License
+### ✅ Verify Email
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+* Route: `GET /auth/verify?token=<verification_token>`
+* Marks the user as verified
+
+### 🔑 Login
+
+* Route: `POST /auth/login`
+* Verifies email and password
+* If the account is not verified:
+
+  * Resends verification email
+* If verified:
+
+  * Sends a **login notification email**
+  * Returns a JWT access token
+
+---
+
+## 🛠 Deployment Notes
+
+If you deploy this API (e.g., to Vercel), Mailtrap emails **will not be visible to users**, as emails are only sent to the developer's Mailtrap inbox.
+
+For production, switch to a real email provider like:
+
+* Gmail SMTP
+* SendGrid
+* Mailgun
+
+---
+
+## 📬 Live Email Access (Production)
+
+If you want users to receive real emails, use production credentials like this:
+
+```env
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USER=your_gmail@gmail.com
+MAIL_PASS=your_app_password
+MAIL_FROM="Your App <your_gmail@gmail.com>"
+```
+
+> Ensure you use App Passwords if you're using Gmail.
+
+---
+
+## ✅ Example Requests
+
+```http
+# Register
+POST /auth/register
+{
+  "email": "user@example.com",
+  "password": "12345678",
+  "username": "Yousef"
+}
+
+# Login
+POST /auth/login
+{
+  "email": "user@example.com",
+  "password": "12345678"
+}
+```
+
+---
+
+## 💡 Final Notes
+
+* Mailtrap is great for development, but not visible to real users
+* Keep your `.env` safe and **never push it** to GitHub
+* All email logic (verification + notifications) is already implemented
+
+---
