@@ -52,8 +52,9 @@ export class AuthProvider {
 
     const link = this.generateLink(newUser.verificationToken);
 
-    // Send verification email
-    await this.mailService.sendVerifyEmailTemplate(email, link);
+    this.mailService.sendVerifyEmailTemplate(email, link).catch((err) => {
+      console.error('Failed to send verification email:', err.message);
+    });
 
     return {
       message: 'User registered successfully, please verify your email',
@@ -66,55 +67,54 @@ export class AuthProvider {
    * @returns An object containing the access token.
    */
   public async login(loginDto: LoginDto) {
-  const { email, password } = loginDto;
+    const { email, password } = loginDto;
 
-  const user = await this.usersRepository.findOne({ where: { email } });
-  if (!user) throw new BadRequestException('Invalid email or password');
+    const user = await this.usersRepository.findOne({ where: { email } });
+    if (!user) throw new BadRequestException('Invalid email or password');
 
-  const isPasswordMatch = await bcrypt.compare(password, user.password);
-  if (!isPasswordMatch)
-    throw new BadRequestException('Invalid email or password');
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch)
+      throw new BadRequestException('Invalid email or password');
 
-  if (!user.isAccountVerified) {
-    let verificationToken = user.verificationToken;
+    if (!user.isAccountVerified) {
+      let verificationToken = user.verificationToken;
 
-    if (!verificationToken) {
-      user.verificationToken = randomBytes(32).toString('hex');
-      const result = await this.usersRepository.save(user);
-      verificationToken = result.verificationToken;
+      if (!verificationToken) {
+        user.verificationToken = randomBytes(32).toString('hex');
+        const result = await this.usersRepository.save(user);
+        verificationToken = result.verificationToken;
+      }
+      if (!verificationToken) {
+        throw new BadRequestException('Verification token is missing.');
+      }
+
+      const link = this.generateLink(verificationToken);
+
+      try {
+        await this.mailService.sendVerifyEmailTemplate(user.email, link);
+      } catch (err) {
+        console.error('Failed to send verification email:', err.message);
+      }
+
+      return {
+        message:
+          'Your email is not verified. A verification link has been sent (if possible).',
+      };
     }
-    if (!verificationToken) {
-      throw new BadRequestException('Verification token is missing.');
-    }
-
-    const link = this.generateLink(verificationToken);
 
     try {
-      await this.mailService.sendVerifyEmailTemplate(user.email, link);
+      await this.mailService.sendLogInEmail(user.email);
     } catch (err) {
-      console.error('Failed to send verification email:', err.message);
+      console.error('Failed to send login email:', err.message);
     }
 
-    return {
-      message:
-        'Your email is not verified. A verification link has been sent (if possible).',
-    };
+    const accessToken = await this.generateJWT({
+      id: user.id,
+      userType: user.userType,
+    });
+
+    return { accessToken };
   }
-
-  try {
-    await this.mailService.sendLogInEmail(user.email);
-  } catch (err) {
-    console.error('Failed to send login email:', err.message);
-  }
-
-  const accessToken = await this.generateJWT({
-    id: user.id,
-    userType: user.userType,
-  });
-
-  return { accessToken };
-}
-
 
   /**
    * Sending reset password link to the client
