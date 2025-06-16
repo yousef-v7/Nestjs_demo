@@ -58,7 +58,6 @@ MAIL_HOST=smtp.mailtrap.io
 MAIL_PORT=2525
 MAIL_USER=your_mailtrap_username_here
 MAIL_PASS=your_mailtrap_password_here
-MAIL_FROM="Your App <noreply@yourapp.com>"
 ```
 
 > ⚠️ Do **NOT** commit your real `.env` or credentials to version control.
@@ -70,7 +69,6 @@ MAIL_HOST=smtp.mailtrap.io
 MAIL_PORT=2525
 MAIL_USER=your_username_here
 MAIL_PASS=your_password_here
-MAIL_FROM="App Name <noreply@app.com>"
 ```
 
 ---
